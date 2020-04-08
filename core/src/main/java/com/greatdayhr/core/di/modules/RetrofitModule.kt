@@ -40,5 +40,5 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun responseHandler() = ResponseHandler()
+    fun responseHandler(retrofit: Retrofit) = ResponseHandler(retrofit)
 }

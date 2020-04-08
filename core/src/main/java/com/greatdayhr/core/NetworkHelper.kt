@@ -1,12 +1,25 @@
 package com.greatdayhr.core
 
+import com.greatdayhr.core.data.BaseResponseV2
+import okhttp3.ResponseBody
+import retrofit2.Converter
 import retrofit2.HttpException
+import retrofit2.Retrofit
+import java.io.IOException
 import java.net.SocketTimeoutException
+
 
 enum class Status {
     SUCCESS,
     ERROR,
     LOADING
+}
+
+@Throws(IOException::class)
+inline fun <reified T> Retrofit.errorConverter(httpException: HttpException): T {
+    val converter: Converter<ResponseBody, T> =
+        this.responseBodyConverter(T::class.java, arrayOfNulls<Annotation>(0))
+    return converter.convert(httpException.response()?.errorBody())!!
 }
 
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
@@ -25,7 +38,7 @@ data class Resource<out T>(val status: Status, val data: T?, val message: String
     }
 }
 
-open class ResponseHandler {
+open class ResponseHandler(private val retrofit: Retrofit) {
     fun <T : Any> handleSuccess(data: T): Resource<T> {
         return Resource.success(data)
     }
@@ -33,6 +46,20 @@ open class ResponseHandler {
     fun <T : Any> handleException(e: Exception): Resource<T> {
         return when (e) {
             is HttpException -> Resource.error(getErrorMessage(e.code()), null)
+            is SocketTimeoutException -> Resource.error(
+                getErrorMessage(900),
+                null
+            )
+            else -> Resource.error(getErrorMessage(Int.MAX_VALUE), null)
+        }
+    }
+
+    fun <T : Any> handleExceptionV2(e: Exception): Resource<T> {
+        return when (e) {
+            is HttpException -> {
+                val error = retrofit.errorConverter<BaseResponseV2<Void>>(e)
+                Resource.error(error.message, null)
+            }
             is SocketTimeoutException -> Resource.error(
                 getErrorMessage(900),
                 null
