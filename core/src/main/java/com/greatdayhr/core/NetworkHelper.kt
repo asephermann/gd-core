@@ -1,6 +1,7 @@
 package com.greatdayhr.core
 
 import com.greatdayhr.core.data.BaseResponseV2
+import com.greatdayhr.core.data.ErrorResponse
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
@@ -45,7 +46,10 @@ open class ResponseHandler(private val retrofit: Retrofit) {
 
     fun <T : Any> handleException(e: Exception): Resource<T> {
         return when (e) {
-            is HttpException -> Resource.error(getErrorMessage(e.code()), null)
+            is HttpException -> {
+                val error = retrofit.errorConverter<ErrorResponse>(e)
+                Resource.error(error.error.message, null)
+            }
             is SocketTimeoutException -> Resource.error(
                 getErrorMessage(900),
                 null
