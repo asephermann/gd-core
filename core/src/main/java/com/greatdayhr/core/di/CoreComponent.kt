@@ -1,5 +1,6 @@
 package com.greatdayhr.core.di
 
+import android.content.Context
 import android.content.SharedPreferences
 import com.greatdayhr.core.ResponseHandler
 import com.greatdayhr.core.di.modules.ContextModule
@@ -16,4 +17,5 @@ interface CoreComponent {
     fun getRetrofit(): Retrofit
     fun getSharedPreferences(): SharedPreferences
     fun getResponseHandler(): ResponseHandler
+    fun getContext(): Context
 }

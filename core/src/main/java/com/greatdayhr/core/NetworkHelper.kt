@@ -6,7 +6,6 @@ import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
 import retrofit2.Retrofit
-import java.io.IOException
 import java.net.SocketTimeoutException
 
 
@@ -16,7 +15,7 @@ enum class Status {
     LOADING
 }
 
-@Throws(IOException::class)
+@Throws(Exception::class)
 inline fun <reified T> Retrofit.errorConverter(httpException: HttpException): T {
     val converter: Converter<ResponseBody, T> =
         this.responseBodyConverter(T::class.java, arrayOfNulls<Annotation>(0))
@@ -47,8 +46,15 @@ open class ResponseHandler(private val retrofit: Retrofit) {
     fun <T : Any> handleException(e: Exception): Resource<T> {
         return when (e) {
             is HttpException -> {
-                val error = retrofit.errorConverter<ErrorResponse>(e)
-                Resource.error(error.error.message, null)
+                try {
+                    val error = retrofit.errorConverter<ErrorResponse>(e)
+                    Resource.error(error.error.message, null)
+                } catch (exception: Exception) {
+                    Resource.error(
+                        getErrorMessage(e.code()),
+                        null
+                    )
+                }
             }
             is SocketTimeoutException -> Resource.error(
                 getErrorMessage(900),
@@ -61,8 +67,15 @@ open class ResponseHandler(private val retrofit: Retrofit) {
     fun <T : Any> handleExceptionV2(e: Exception): Resource<T> {
         return when (e) {
             is HttpException -> {
-                val error = retrofit.errorConverter<BaseResponseV2<Void>>(e)
-                Resource.error(error.message, null)
+                try {
+                    val error = retrofit.errorConverter<BaseResponseV2<Void>>(e)
+                    Resource.error(error.message, null)
+                } catch (exception: Exception) {
+                    Resource.error(
+                        getErrorMessage(e.code()),
+                        null
+                    )
+                }
             }
             is SocketTimeoutException -> Resource.error(
                 getErrorMessage(900),
