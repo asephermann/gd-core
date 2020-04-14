@@ -9,6 +9,8 @@
     <color name="colorSuperLightGrey">#F2F2F2</color>
     <color name="colorGreen">#8CC63F</color>
     <color name="colorGreenOpacity">#B38CC63F</color>
+    <color name="colorRed">#D72026</color>
+    <color name="colorRedOpacity">#B3D72026</color>
     <color name="colorError">#e74c3c</color>
     <color name="colorWhite">@android:color/white</color>
     <color name="colorTransparent">@android:color/transparent</color>
