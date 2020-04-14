@@ -2,11 +2,9 @@ package com.greatdayhr.core.extension
 
 import android.app.Activity
 import android.app.ProgressDialog
-import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import android.widget.Toast
 
 fun Activity.progressDialog(message: String): ProgressDialog {
     val dialog = ProgressDialog(this)
@@ -53,9 +51,3 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
         }
     })
 }
-
-fun Context.toast(message: String? = "Message empty") =
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-
-fun Context.longToast(message: String? = "Message empty") =
-    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
