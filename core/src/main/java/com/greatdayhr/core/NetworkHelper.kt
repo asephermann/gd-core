@@ -6,6 +6,7 @@ import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
 import retrofit2.Retrofit
+import java.io.IOException
 import java.net.SocketTimeoutException
 
 
@@ -60,6 +61,10 @@ open class ResponseHandler(private val retrofit: Retrofit) {
                 getErrorMessage(900),
                 null
             )
+            is IOException -> Resource.error(
+                getErrorMessage(901),
+                null
+            )
             else -> Resource.error(getErrorMessage(Int.MAX_VALUE), null)
         }
     }
@@ -81,15 +86,20 @@ open class ResponseHandler(private val retrofit: Retrofit) {
                 getErrorMessage(900),
                 null
             )
+            is IOException -> Resource.error(
+                getErrorMessage(901),
+                null
+            )
             else -> Resource.error(getErrorMessage(Int.MAX_VALUE), null)
         }
     }
 
     private fun getErrorMessage(code: Int): String {
         return when (code) {
+            901 -> "Connection error. Please check your network settings."
             900 -> "Timeout"
             401 -> "Unauthorised"
-            404 -> "Not found"
+            404 -> "Service not found"
             else -> "Something went wrong"
         }
     }
