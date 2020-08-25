@@ -1,5 +1,6 @@
 package com.greatdayhr.core.di.modules
 
+import com.google.gson.GsonBuilder
 import com.greatdayhr.core.HttpHeaderInterceptor
 import com.greatdayhr.core.ResponseHandler
 import dagger.Module
@@ -32,11 +33,14 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun retrofit(client: OkHttpClient): Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.com")
-        .client(client)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    fun retrofit(client: OkHttpClient): Retrofit {
+        val gson = GsonBuilder().setLenient().create()
+        return Retrofit.Builder()
+            .baseUrl("https://api.com")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
 
     @Provides
     @Singleton
