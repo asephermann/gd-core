@@ -5,7 +5,7 @@ import com.greatdayhr.core.HttpHeaderInterceptor
 import com.greatdayhr.core.ResponseHandler
 import dagger.Module
 import dagger.Provides
-import me.jessyan.retrofiturlmanager.RetrofitUrlManager
+import com.me.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

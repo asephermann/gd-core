@@ -1,6 +1,6 @@
 package com.greatdayhr.core
 
-import me.jessyan.retrofiturlmanager.RetrofitUrlManager
+import com.me.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.OkHttpClient
 
 object RetrofitUrl {

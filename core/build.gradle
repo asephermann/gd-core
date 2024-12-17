@@ -67,11 +67,11 @@ dependencies {
     implementation "androidx.preference:preference-ktx:1.1.0"
 
     // URL Manager
-    implementation 'me.jessyan:retrofit-url-manager:1.4.0'
+    implementation 'io.gitee.osarms:retrofit-url-manager:1.0.0'
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
     // Circular Image
-    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    implementation 'com.github.amulyakhare:TextDrawable:558677ea31'
 }
